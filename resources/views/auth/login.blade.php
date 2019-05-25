@@ -8,6 +8,7 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -65,6 +66,13 @@
                             </div>
                         </div>
                     </form>
+
+                    <!-- 20190525 Line login -->
+                    <hr>
+                    <a href="{{ $url }}">
+                        <img src="{{ asset('LineLoginButtonImage/images/DeskTop/1x/44dp/btn_login_base.png') }}" alt="..." class="rounded mx-auto d-block">
+                    </a>
+
                 </div>
             </div>
         </div>
