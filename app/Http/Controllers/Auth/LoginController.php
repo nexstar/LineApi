@@ -40,14 +40,15 @@ class LoginController extends Controller
     // 20190525 Line login
     public function showLoginForm()
     {
+        // Line login authorization request
         $url = 'https://access.line.me/oauth2/v2.1/authorize';
         $url .= '?response_type=code';
         $url .= '&client_id='.env('LINE_CLIENT_ID');
         $url .= '&redirect_uri='.env('LINE_CALLBACK_URL');
         $url .= '&state='.$this->randtext(6);
-        $url .= '&scope=openid%20profile%20email';
+        $url .= '&scope=email%20openid%20profile';
         $url .= '&nonce='.$this->randtext(6);
-
+        $url .= '&prompt=consent';
 
         return view('auth.login', compact('url'));
     }
