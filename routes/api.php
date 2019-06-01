@@ -16,3 +16,5 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/{provider}/webhook', 'SocialController@webhook')->where('provider', '[a-z]+');

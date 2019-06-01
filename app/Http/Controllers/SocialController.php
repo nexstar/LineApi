@@ -7,6 +7,7 @@ use App\Social;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class SocialController extends Controller
 {
@@ -77,7 +78,7 @@ class SocialController extends Controller
         $url = 'https://api.line.me/v2/profile';
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$output['access_token']));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.['access_token']));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -114,7 +115,6 @@ class SocialController extends Controller
 
         return redirect('/home');
     }
-
     public static function urlsafeB64Decode(string $input)
     {
         $remainder = strlen($input) % 4;
@@ -126,5 +126,15 @@ class SocialController extends Controller
         }
 
         return base64_decode(strtr($input, '-_', '+/'));
+    }
+
+    public function webhook(Request $request)
+    {
+        Log::debug($request->header());
+        Log::debug($request->all());
+
+        return response('Success', 200);
+
+//        print_r($request->all());
     }
 }
