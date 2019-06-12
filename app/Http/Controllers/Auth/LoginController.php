@@ -52,7 +52,7 @@ class LoginController extends Controller
 
         return view('auth.login', compact('url'));
     }
-
+    
     private function randtext($length) {
         $password_len = $length;    //字串長度
         $password = '';
@@ -63,4 +63,5 @@ class LoginController extends Controller
         }
         return $password;
     }
+    // 20190525 Line login
 }

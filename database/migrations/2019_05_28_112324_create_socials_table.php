@@ -19,6 +19,9 @@ class CreateSocialsTable extends Migration
             $table->string('provider');
             $table->string('provider_user_id');
             $table->text('picture');
+            $table->text('access_token');
+            $table->text('refresh_token');
+            $table->bigInteger('exp');
             $table->timestamps();
             $table->softDeletes();
         });

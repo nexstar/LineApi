@@ -11,14 +11,20 @@ use Illuminate\Support\Facades\Log;
 
 class SocialController extends Controller
 {
+    // 20190612 Line login
     public function callback(Request $request)
     {
-        //print_r($request->all());
         // Line login authorization request error
         if ($request->has('error')) {
+            Log::error($request->error);
+            Log::error($request->error_description);
+            Log::error($request->state);
             return redirect('/');
         }
         // Line login access token
+        Log::info($request->code);
+        Log::info($request->state);
+        Log::info($request->friendship_status_changed);
         $url = 'https://api.line.me/oauth2/v2.1/token';
         $data = [
             'grant_type' => 'authorization_code',
@@ -34,33 +40,36 @@ class SocialController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $statuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-
-        if($httpcode != 200){
+        if($statuscode != 200){
             return redirect('/');
         }
 
         $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-
+        Log::info($output['token_type']);
+        Log::info($output['scope']);
+        if ($output['token_type'] != 'Bearer'){
+            return redirect('/');
+        }
         // Line login decod JWT header.payload.signature
-        $tokens = explode('.', $output['id_token']);
-        if (count($tokens) != 3){
+        $idToken = explode('.', $output['id_token']);
+        if (count($idToken) != 3){
             return redirect('/');
         }
 
-        list($header64, $payload64, $sign) = $tokens;
-
-        $header = json_decode($this->urlsafeB64Decode($header64), JSON_OBJECT_AS_ARRAY);
-        if (empty($header['alg'])){
+        list($header64, $payload64, $signature) = $idToken;
+        $header = json_decode($this->fnUrlsafeB64Decode($header64), JSON_OBJECT_AS_ARRAY);
+        if (empty($header['typ']) || empty($header['alg'])){
             return redirect('/');
         }
-//        if (hash_hmac('sha256', $header64 . '.' . $payload64, env('LINE_CLIENT_SECRET')) !== $this->urlsafeB64Decode($sign)){
-//            return redirect('/');
-//        }
-
-        $payload = json_decode($this->urlsafeB64Decode($payload64), JSON_OBJECT_AS_ARRAY);
-
+        $channelSecret = mb_convert_encoding(env('LINE_CLIENT_SECRET'), "UTF-8");
+        $httpRequestBody  = mb_convert_encoding($header64 . "." . $payload64, "UTF-8");
+        $calcSignature  = hash_hmac('sha256', $httpRequestBody, $channelSecret, true);
+        if ($calcSignature !== $this->fnUrlsafeB64Decode($signature)){
+            return redirect('/');
+        }
+        $payload = json_decode($this->fnUrlsafeB64Decode($payload64), JSON_OBJECT_AS_ARRAY);
         if (isset($payload['aud']) && $payload['aud'] != env('LINE_CLIENT_ID')){
             return redirect('/');
         }
@@ -73,23 +82,25 @@ class SocialController extends Controller
 //        if(isset($payload['nonce']) && $payload['nonce'] != ){
 //
 //        }
+        $accessToken = $output['access_token'];
+        $refreshToken = $output['refresh_token'];
+        $exp = $payload['exp'];
 
         // Line login user profiles
         $url = 'https://api.line.me/v2/profile';
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.['access_token']));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$accessToken));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $statuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-
-        if($httpcode != 200){
+        if($statuscode != 200){
             return redirect('/');
         }
 
         $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-
+        Log::info($output['userId']);
         // insert/update user and social
         $social = Social::where('provider', 'like', 'Line')->where('provider_user_id', $output['userId'])->first();
         if($social){
@@ -104,37 +115,96 @@ class SocialController extends Controller
             $social->provider = 'Line';
             $social->provider_user_id = $output['userId'];
         }
-        $user->name = $output['displayName'];
-        $user->email = $payload['email'];
-        $user->save();
 
-        $social->picture = $output['pictureUrl'];
-        $user->social()->save($social);
+        try {
+            $user->name = $output['displayName'];
+            $user->email = $payload['email'];
+            $user->save();
 
+            $social->picture = $output['pictureUrl'];
+            $social->access_token = $accessToken;
+            $social->refresh_token = $refreshToken;
+            $social->exp = $exp;
+            $user->social()->save($social);
+        }catch(\Exception $e) {
+            Log::error($e->getMessage());
+        }
+
+        // laravel login in
         Auth::loginUsingId($user->id);
 
         return redirect('/home');
     }
-    public static function urlsafeB64Decode(string $input)
+    // 20190612 Line login
+    public function webhook(Request $request, $text)
     {
-        $remainder = strlen($input) % 4;
+        // Validating the signature
+        $header = $request->header();
+        $xLineSignature = $header['x-line-signature'][0];
 
-        if ($remainder > 0)
-        {
+        $channelSecret = mb_convert_encoding(env('LINE_Messaging_CLIENT_SECRET'), "UTF-8");
+        $httpRequestBody  = mb_convert_encoding(json_encode($request->all()), "UTF-8");
+        $signature = base64_encode(hash_hmac('sha256', $httpRequestBody, $channelSecret, true));
+
+        if ($xLineSignature != $signature) {
+            return response('Not from LINE Platform', 401);
+        }
+        // Validating the signature
+
+        Log::debug($request->all());
+        $httpRequestBody = $request->all();
+
+        // Message event
+        if($httpRequestBody['events'][0]['type'] == 'message'){
+            $messageType = $httpRequestBody['events'][0]['message']['type'];
+
+            switch ($messageType) {
+                case 'text':
+                    $messageText =  $httpRequestBody['events'][0]['message']['text'];
+                    break;
+            }
+        }
+        // Message event
+        return response('Success', 200);
+    }
+
+
+    // base64_decode
+    private function fnUrlsafeB64Decode($data)
+    {
+        $remainder = strlen($data) % 4;
+
+        if ($remainder > 0) {
             $padlen = 4 - $remainder;
-            $input .= str_repeat('=', $padlen);
+            $data .= str_repeat('=', $padlen);
         }
 
-        return base64_decode(strtr($input, '-_', '+/'));
+        return base64_decode(strtr($data, '-_', '+/'));
     }
-
-    public function webhook(Request $request)
+    // base64_decode
+    // Send reply message
+    private function fnSRM()
     {
-        Log::debug($request->header());
-        Log::debug($request->all());
+        $data = [
 
-        return response('Success', 200);
+        ];
 
-//        print_r($request->all());
+        $url = 'https://api.line.me/v2/bot/message/reply';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: Bearer '));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if($httpcode != 200){
+            return redirect('/');
+        }
+
+        $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
     }
+    // Send reply message
 }
