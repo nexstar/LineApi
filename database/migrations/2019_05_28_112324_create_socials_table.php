@@ -21,7 +21,7 @@ class CreateSocialsTable extends Migration
             $table->text('picture');
             $table->text('access_token');
             $table->text('refresh_token');
-            $table->bigInteger('exp');
+            $table->bigInteger('expires_in');
             $table->timestamps();
             $table->softDeletes();
         });

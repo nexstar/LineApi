@@ -16,5 +16,6 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/auth/{provider}/callback', 'SocialController@callback')->where('provider', '[a-z]+');
+Route::get('/{provider}/retoken', 'SocialController@retoken')->where('provider', '[a-z]+');
 
 Route::get('/home', 'HomeController@index')->name('home');

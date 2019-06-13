@@ -84,7 +84,7 @@ class SocialController extends Controller
 //        }
         $accessToken = $output['access_token'];
         $refreshToken = $output['refresh_token'];
-        $exp = $payload['exp'];
+        $expiresIn = strtotime('now') + $output['expires_in'];
 
         // Line login user profiles
         $url = 'https://api.line.me/v2/profile';
@@ -124,7 +124,7 @@ class SocialController extends Controller
             $social->picture = $output['pictureUrl'];
             $social->access_token = $accessToken;
             $social->refresh_token = $refreshToken;
-            $social->exp = $exp;
+            $social->expires_in = $expiresIn;
             $user->social()->save($social);
         }catch(\Exception $e) {
             Log::error($e->getMessage());
@@ -136,6 +136,70 @@ class SocialController extends Controller
         return redirect('/home');
     }
     // 20190612 Line login
+    // 20190613 Refresh access token
+    public function retoken(Request $request)
+    {
+//        $socials = Social::whereBetween('expires_in', [strtotime(date('Y-m-d')), strtotime(date('Y-m-d').'+10 day')])->get();
+        $socials = Social::all();
+        foreach ($socials as $social){
+            // Verifying access tokens
+            $url = 'https://api.line.me/oauth2/v2.1/verify?access_token='.$social->access_token;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $output = curl_exec($ch);
+            $statuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            if($statuscode == 400){
+                $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
+                Log::info($output['error']);
+                Log::info($output['error_description']);
+            }
+            if($statuscode == 200) {
+                $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
+                Log::info($output['scope']);
+                Log::info($output['client_id']);
+                Log::info($output['expires_in']);
+            }
+            // Verifying access tokens
+
+            // Refreshing access tokens
+            $url = 'https://api.line.me/oauth2/v2.1/token';
+            $data = [
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $social->refresh_token,
+                'client_id' => env('LINE_CLIENT_ID'),
+                'client_secret' => env('LINE_CLIENT_SECRET')
+            ];
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $output = curl_exec($ch);
+            $statuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            if($statuscode != 200){
+                $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
+                Log::error($output['error']);
+                Log::error($output['error_description']);
+            }
+
+            $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
+            Log::info($output['token_type']);
+            Log::info($output['scope']);
+
+            $social->access_token = $output['access_token'];
+            $social->refresh_token = $output['refresh_token'];
+            $social->expires_in = strtotime('now') + $output['expires_in'];
+            $social->save();
+
+            return redirect('/');
+            // Refreshing access tokens
+        }
+    }
+    // 20190613 Refresh access token
     public function webhook(Request $request, $text)
     {
         // Validating the signature
