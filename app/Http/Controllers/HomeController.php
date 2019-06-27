@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\BotUserProfile;
+use App\Order;
+
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $botUserProfiles = BotUserProfile::all();
+        $orders = Order::all();
+
+        return view('home', compact('botUserProfiles', 'orders'));
     }
 }

@@ -15,8 +15,16 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
+
+
 Route::get('/auth/{provider}/callback', 'SocialController@callback')->where('provider', '[a-z]+');
 Route::get('/{provider}/retoken', 'SocialController@retoken')->where('provider', '[a-z]+');
-Route::get('/{provider}/spm', 'SocialController@spm')->where('provider', '[a-z]+');
+Route::get('/{provider}/spm/{id}', 'SocialController@spm')->where('provider', '[a-z]+')->where('id', '[0-9]+');
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Line Pay API
+Route::get('/{provider}/reserveapi', 'SocialController@reserveapi')->where('provider', '[a-z]+');
+Route::get('/{provider}/paymentsapi/{transactionId}', 'SocialController@paymentsapi')->where('provider', '[a-z]+')->where('transactionId', '[0-9]+');
+Route::get('/{provider}/refundapi/{transactionId}', 'SocialController@refundapi')->where('provider', '[a-z]+')->where('transactionId', '[0-9]+');
+Route::get('/{provider}/regkeyapi/{orderId}', 'SocialController@regkeyapi')->where('provider', '[a-z]+')->where('orderId', '[0-9]+');
+// Line Pay API
