@@ -13,32 +13,38 @@ use Illuminate\Support\Facades\Log;
 
 class SocialController extends Controller
 {
-    // 20190612 Line login
+    // 20190612 Line Login
     public function callback(Request $request)
     {
-        // Line login authorization request error
+        // Line Login authorization request error
         if ($request->has('error')) {
-            Log::error($request->error);
-            Log::error($request->error_description);
-            Log::error($request->state);
+            Log::error($request->error); // Error code.
+            Log::error($request->error_description); // Human-readable ASCII encoded text description of the error.
+            Log::error($request->state); // OAuth 2.0 state value. Required if the authorization Request included the state parameter.
             return redirect('/');
         }
-        // Line login access token
-        Log::info($request->code);
-        Log::info($request->state);
-        Log::info($request->friendship_status_changed);
+        // Line Login authorization request error
+
+//        Log::info($request->code); // Authorization code used to get an access token. Valid for 10 minutes. This authorization code can only be used once.
+//        Log::info($request->state); // state parameter included in the authorization URL of original request. Your application should verify that this value matches the one in the original request.
+//        Log::info($request->friendship_status_changed); // true if the friendship status between the user and the LINE official account changes during login. Otherwise, false. This value is only returned if the bot_prompt query parameter is specified in the authorization request and the consent screen with the option to add your LINE official account as a friend is displayed to the user. For more information, see Linking a LINE official account with your LINE Login channel.
+        // Line Login access token
         $url = 'https://api.line.me/oauth2/v2.1/token';
+
+        $header = ['Content-Type: application/x-www-form-urlencoded'];
+
         $data = [
-            'grant_type' => 'authorization_code',
-            'code' => $request->code,
-            'redirect_uri' => env('LINE_CALLBACK_URL'),
-            'client_id' => env('LINE_CLIENT_ID'),
-            'client_secret' => env('LINE_CLIENT_SECRET')
+            'grant_type' => 'authorization_code', // Specifies the grant type
+            'code' => $request->code, // Authorization code
+            'redirect_uri' => env('LINE_CALLBACK_URL'), // Callback URL
+            'client_id' => env('LINE_CLIENT_ID'), // Channel ID
+            'client_secret' => env('LINE_CLIENT_SECRET') // Channel secret
         ];
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
@@ -49,25 +55,36 @@ class SocialController extends Controller
         }
 
         $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-        Log::info($output['token_type']);
-        Log::info($output['scope']);
+
+//        $output['access_token']; // Access token. Valid for 30 days.
+//        $output['expires_in']; // Amount of time in seconds until the access token expires.
+//        $output['id_token']; // JSON Web Token (JWT) that includes information about the user. This field is returned only if openid is specified in the scope.
+//        $output['refresh_token']; // Token used to get a new access token. Valid up until 10 days after the access token expires.
+//        $output['scope']; // Permissions granted by the user.
+//        $output['token_type']; // Bearer.
         if ($output['token_type'] != 'Bearer'){
             return redirect('/');
         }
-        // Line login decod JWT header.payload.signature
+
+        // Line Login decod JWT header.payload.signature
         $idToken = explode('.', $output['id_token']);
         if (count($idToken) != 3){
             return redirect('/');
         }
 
         list($header64, $payload64, $signature) = $idToken;
+        // Header
         $header = json_decode($this->fnUrlsafeB64Decode($header64), JSON_OBJECT_AS_ARRAY);
         if (empty($header['typ']) || empty($header['alg'])){
             return redirect('/');
         }
+        // Header
+        // Payload
         $channelSecret = mb_convert_encoding(env('LINE_CLIENT_SECRET'), "UTF-8");
         $httpRequestBody  = mb_convert_encoding($header64 . "." . $payload64, "UTF-8");
+        // Signature
         $calcSignature  = hash_hmac('sha256', $httpRequestBody, $channelSecret, true);
+        // Signature
         if ($calcSignature !== $this->fnUrlsafeB64Decode($signature)){
             return redirect('/');
         }
@@ -81,18 +98,24 @@ class SocialController extends Controller
         if (isset($payload['exp']) && $payload['exp'] < strtotime('now')){
             return redirect('/');
         }
-//        if(isset($payload['nonce']) && $payload['nonce'] != ){
+//        if(isset($payload['nonce']) && $payload['nonce'] != ){ // 之前https://access.line.me/oauth2/v2.1/authorize的nonce
 //
 //        }
-        $accessToken = $output['access_token'];
-        $refreshToken = $output['refresh_token'];
-        $expiresIn = strtotime('now') + $output['expires_in'];
+        // Payload
+        // Line Login decod JWT header.payload.signature
+        $accessToken = $output['access_token']; // Access token. Valid for 30 days.
+        $refreshToken = $output['refresh_token']; // Token used to get a new access token. Valid up until 10 days after the access token expires.
+        $expiresIn = strtotime('now') + $output['expires_in']; // Amount of time in seconds until the access token expires.
+        // Line Login access token
 
-        // Line login user profiles
+        // Line Login user profiles
         $url = 'https://api.line.me/v2/profile';
+
+        $header = ['Authorization: Bearer '.$accessToken];
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$accessToken));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
         $statuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -102,15 +125,14 @@ class SocialController extends Controller
         }
 
         $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-        Log::info($output['userId']);
         // insert/update user and social
-        $social = Social::where('provider', 'like', 'Line')->where('provider_user_id', $output['userId'])->first();
-        if($social){
-            $user = User::where('id', $social->user_id)->first();
+        $social = Social::where('provider', 'like', 'Line')->where('provider_user_id', $output['userId'])->first(); // 判斷資料庫是否有資料
+        if($social){ // 更新
+            $user = User::where('id', $social->user_id)->first(); // 取得用戶資料
 
             $social->provider = 'Line';
             $social->provider_user_id = $social->provider_user_id;
-        }else{
+        }else{ // 新增
             $user = new User;
 
             $social = new Social;
@@ -131,52 +153,59 @@ class SocialController extends Controller
         }catch(\Exception $e) {
             Log::error($e->getMessage());
         }
+        // insert/update user and social
+        // Line Login user profiles
 
         // laravel login in
         Auth::loginUsingId($user->id);
+        // laravel login in
 
         return redirect('/home');
     }
-    // 20190612 Line login
+    // 20190612 Line Login
     // 20190613 Refresh access token
     public function retoken(Request $request)
     {
-//        $socials = Social::whereBetween('expires_in', [strtotime(date('Y-m-d')), strtotime(date('Y-m-d').'+10 day')])->get();
-        $socials = Social::all();
+//        $socials = Social::whereBetween('expires_in', [strtotime(date('Y-m-d')), strtotime(date('Y-m-d').'+10 day')])->get(); // 判斷資料庫是否有資料
+        $socials = Social::all(); // 取得所有用戶
         foreach ($socials as $social){
             // Verifying access tokens
             $url = 'https://api.line.me/oauth2/v2.1/verify?access_token='.$social->access_token;
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $output = curl_exec($ch);
             $statuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
-            if($statuscode == 400){
+            if($statuscode != 200){
                 $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-                Log::info($output['error']);
-                Log::info($output['error_description']);
+                Log::error($output['returnCode']); // 結果代碼
+                Log::error($output['returnMessage']); // 結果訊息或失敗理由
             }
-            if($statuscode == 200) {
-                $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-                Log::info($output['scope']);
-                Log::info($output['client_id']);
-                Log::info($output['expires_in']);
-            }
+
+            $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
+//            $output['scope']; // Permissions obtained through the access token.
+//            $output['client_id']; // Channel ID for which the access token is issued.
+//            $output['expires_in']; // Expiration date of the access token. Expressed as the remaining number of seconds to expiry from when the API was called.
             // Verifying access tokens
 
             // Refreshing access tokens
             $url = 'https://api.line.me/oauth2/v2.1/token';
+
+            $header = ['Content-Type: application/x-www-form-urlencoded'];
+
             $data = [
-                'grant_type' => 'refresh_token',
-                'refresh_token' => $social->refresh_token,
-                'client_id' => env('LINE_CLIENT_ID'),
-                'client_secret' => env('LINE_CLIENT_SECRET')
+                'grant_type' => 'refresh_token', // refresh_token
+                'refresh_token' => $social->refresh_token, // Refresh token. Valid up until 10 days after the access token expires. You must log in the user again if the refresh token expires.
+                'client_id' => env('LINE_CLIENT_ID'), // Channel ID
+                'client_secret' => env('LINE_CLIENT_SECRET') // Channel secret
             ];
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $output = curl_exec($ch);
@@ -184,20 +213,24 @@ class SocialController extends Controller
             curl_close($ch);
             if($statuscode != 200){
                 $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-                Log::error($output['error']);
-                Log::error($output['error_description']);
+                Log::error($output['returnCode']); // 結果代碼
+                Log::error($output['returnMessage']); // 結果訊息或失敗理由
             }
 
             $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-            Log::info($output['token_type']);
-            Log::info($output['scope']);
+
+//            $output['token_type']; // Bearer
+//            $output['scope']; // Permissions obtained through the access token.
+//            $output['access_token']; // Access token. Valid for 30 days.
+//            $output['refresh_token']; // Token used to get a new access token. Valid up until 10 days after the access token expires.
+//            $output['expires_in']; // Expiration date of the access token. Expressed in the remaining number of seconds to expiry from when the API was called.
 
             $social->access_token = $output['access_token'];
             $social->refresh_token = $output['refresh_token'];
             $social->expires_in = strtotime('now') + $output['expires_in'];
             $social->save();
 
-            return redirect('/');
+            return redirect('/home');
             // Refreshing access tokens
         }
     }

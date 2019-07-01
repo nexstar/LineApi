@@ -72,6 +72,7 @@
                     <a href="{{ $url }}">
                         <img src="{{ asset('LineLoginButtonImage/images/DeskTop/1x/44dp/btn_login_base.png') }}" alt="..." class="rounded mx-auto d-block">
                     </a>
+                    <!-- 20190525 Line login -->
 
                 </div>
             </div>

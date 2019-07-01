@@ -17,6 +17,12 @@
                     You are logged in!
                 </div>
             </div>
+            <!-- Refresh access tokens -->
+            <p>Refresh access tokens</p>
+            <a class="btn btn-outline-dark btn-block" href="{{ url('line/retoken') }}" role="button">Refresh access tokens</a>
+            <p> {{ Auth::user()->social->access_token }}</p>
+            <!-- Refresh access tokens -->
+
             <p>Send push message</p>
             @foreach($botUserProfiles as $botUserProfile)
                 <a class="btn btn-outline-dark btn-block" href="{{ url('line/spm', [$botUserProfile->id]) }}" role="button">Send push message to {{ $botUserProfile->display_name }}</a>
