@@ -766,7 +766,7 @@ class SocialController extends Controller
                                 ),
                                 array(
                                     'type' => 'location',
-                                    'label' => 'Location', // Label for the action Max: 20 characters
+                                    'label' => 'Location' // Label for the action Max: 20 characters
                                 )
                             ]
                         )
