@@ -23,10 +23,14 @@
             <p> {{ Auth::user()->social->access_token }}</p>
             <!-- Refresh access tokens -->
 
+            <!-- Line Messaging API -->
+            <p>Add bot ID</p>
+            <p>@252hlgrz</p>
             <p>Send push message</p>
             @foreach($botUserProfiles as $botUserProfile)
                 <a class="btn btn-outline-dark btn-block" href="{{ url('line/spm', [$botUserProfile->id]) }}" role="button">Send push message to {{ $botUserProfile->display_name }}</a>
             @endforeach
+            <!-- Line Messaging API -->
 
             <!-- Line Pay API -->
             <p>付款 Line Pay</p>

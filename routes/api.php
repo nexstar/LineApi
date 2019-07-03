@@ -17,7 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Line Messaging API
 Route::post('/{provider}/webhook', 'SocialController@webhook')->where('provider', '[a-z]+');
+// Line Messaging API
 
 // Line Pay API
 Route::get('/{provider}/confirmapi', 'SocialController@confirmapi')->where('provider', '[a-z]+');

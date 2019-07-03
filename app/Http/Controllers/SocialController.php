@@ -85,6 +85,7 @@ class SocialController extends Controller
         // Signature
         $calcSignature  = hash_hmac('sha256', $httpRequestBody, $channelSecret, true);
         // Signature
+
         if ($calcSignature !== $this->fnUrlsafeB64Decode($signature)){
             return redirect('/');
         }
@@ -235,16 +236,15 @@ class SocialController extends Controller
         }
     }
     // 20190613 Refresh access token
-    // 20190619 webhook
+    // 20190619 Line Messaging API
     public function webhook(Request $request, $text)
     {
         // Validating the signature
         $header = $request->header();
         $xLineSignature = $header['x-line-signature'][0];
 
-        Log::info($xLineSignature);
-        $channelSecret = mb_convert_encoding(env('LINE_Messaging_CLIENT_SECRET'), "UTF-8");
         $httpRequestBody  = mb_convert_encoding(json_encode($request->all()), "UTF-8");
+        $channelSecret = mb_convert_encoding(env('LINE_Messaging_CLIENT_SECRET'), "UTF-8");
         $signature = base64_encode(hash_hmac('sha256', $httpRequestBody, $channelSecret, true));
 
         if ($xLineSignature != $signature) {
@@ -252,6 +252,7 @@ class SocialController extends Controller
         }
         // Validating the signature
 
+        // Webhook event types
         $httpRequestBody = $request->all();
 
         // Common properties
@@ -278,75 +279,104 @@ class SocialController extends Controller
             // Message event
             case 'message':
                 $replyToken = $httpRequestBody['events'][0]['replyToken'];
-                $messageType = $httpRequestBody['events'][0]['message']['type'];
 
+//                $httpRequestBody['events'][0]['message']['id']; // Message ID
+                $messageType = $httpRequestBody['events'][0]['message']['type'];
                 switch ($messageType) {
                     // Text
                     case 'text':
-                        $messageText = $httpRequestBody['events'][0]['message']['text'];
-                        $this->fnSRM($replyToken, 'template');
+                        $messageText = $httpRequestBody['events'][0]['message']['text']; // Message text
+                        if ($messageText == 'Hello'){
+                            $this->fnSRM($replyToken, 'text');
+                        }else{
+                            $this->fnSRM($replyToken, 'imagemap');
+                        }
                         break;
                     // Image
                     case 'image':
-                        $imageType = $httpRequestBody['events'][0]['message']['contentProvider']['type'];
+                        $imageType = $httpRequestBody['events'][0]['message']['contentProvider']['type']; // Provider of the image file.
                         switch ($imageType) {
+                            // line: The image was sent by a LINE user.
                             case 'line':
-                                $this->fnMC($httpRequestBody['events'][0]['message']['id']);
+                                $this->fnMC($httpRequestBody['events'][0]['message']['id']); // Gets image, video, and audio data sent by users.
                                 $this->fnSRM($replyToken, 'image');
+                                break;
+                            // external: The image was sent using the LIFF liff.sendMessages() method.
+                            case 'external':
+//                                $httpRequestBody['events'][0]['message']['contentProvider']['originalContentUrl']; // URL of the image file.
+//                                $httpRequestBody['events'][0]['message']['contentProvider']['previewImageUrl']; // URL of the preview image.
                                 break;
                         }
                         break;
                     // Video
                     case 'video':
-                        $videoType = $httpRequestBody['events'][0]['message']['contentProvider']['type'];
-                        $videoDuration = $httpRequestBody['events'][0]['message']['duration'];
+//                        $httpRequestBody['events'][0]['message']['duration']; // Length of video file (milliseconds)
+                        $videoType = $httpRequestBody['events'][0]['message']['contentProvider']['type']; // Provider of the video file.
                         switch ($videoType) {
+                            // line: The video was sent by a LINE user.
                             case 'line':
-                                $this->fnMC($httpRequestBody['events'][0]['message']['id']);
-                                $this->fnSRM($replyToken, 'video');
+                                $this->fnMC($httpRequestBody['events'][0]['message']['id']); // Gets image, video, and audio data sent by users.
+                                break;
+                            // external: The video was sent using the LIFF liff.sendMessages() method.
+                            case 'external':
+//                                $httpRequestBody['events'][0]['message']['contentProvider']['originalContentUrl']; // URL of the video file.
+//                                $httpRequestBody['events'][0]['message']['contentProvider']['previewImageUrl']; // URL of the preview image.
                                 break;
                         }
                         break;
                     // Audio
                     case 'audio':
-                        $audioType = $httpRequestBody['events'][0]['message']['contentProvider']['type'];
-                        $audioDuration = $httpRequestBody['events'][0]['message']['duration'];
+//                        $httpRequestBody['events'][0]['message']['duration']; // Length of audio file (milliseconds)
+                        $audioType = $httpRequestBody['events'][0]['message']['contentProvider']['type']; // Provider of the audio file.
                         switch ($audioType) {
+                            // line: The audio file was sent by a LINE user.
                             case 'line':
-                                $this->fnMC($httpRequestBody['events'][0]['message']['id']);
+                                $this->fnMC($httpRequestBody['events'][0]['message']['id']); // Gets image, video, and audio data sent by users.
+                                break;
+                            // external: The audio file was sent using the LIFF liff.sendMessages() method.
+                            case 'external':
+//                                $httpRequestBody['events'][0]['message']['contentProvider']['originalContentUrl']; // URL of the audio file.
                                 break;
                         }
                         break;
                     // File
                     case 'file':
-                        $fileType = $httpRequestBody['events'][0]['message']['contentProvider']['type'];
-                        $audiofileName = $httpRequestBody['events'][0]['message']['fileName'];
-                        $audiofileSize = $httpRequestBody['events'][0]['message']['fileSize'];
-                        $this->fnMC($httpRequestBody['events'][0]['message']['id']);
+//                        $httpRequestBody['events'][0]['message']['fileName']; // File name
+//                        $httpRequestBody['events'][0]['message']['fileSize']; // File size in bytes
+                        $this->fnMC($httpRequestBody['events'][0]['message']['id']); // Gets image, video, and audio data sent by users.
                         break;
                     // Location
                     case 'location':
-                        $locationTitle = $httpRequestBody['events'][0]['message']['title'];
-                        $locationAddress = $httpRequestBody['events'][0]['message']['address'];
-                        $locationLatitude = $httpRequestBody['events'][0]['message']['latitude'];
-                        $locationLongitude = $httpRequestBody['events'][0]['message']['longitude'];
-                        $this->fnSRM($replyToken, 'location');
+//                        $locationTitle = $httpRequestBody['events'][0]['message']['title']; // Title
+//                        $locationAddress = $httpRequestBody['events'][0]['message']['address']; // Address
+//                        $locationLatitude = $httpRequestBody['events'][0]['message']['latitude']; // Latitude
+//                        $locationLongitude = $httpRequestBody['events'][0]['message']['longitude']; // Longitude
                         break;
                     // Sticker
                     case 'sticker':
+//                        $httpRequestBody['events'][0]['message']['packageId']; // Package ID
+//                        $httpRequestBody['events'][0]['message']['stickerId']; // Sticker ID
                         $this->fnSRM($replyToken, 'sticker');
                         break;
                 }
                 break;
             // Follow event
             case 'follow':
+                $replyToken = $httpRequestBody['events'][0]['replyToken'];
+                $this->fnSRM($replyToken, 'text');
+                break;
+            // Unfollow event
+            case 'unfollow':
 
                 break;
         }
         // Event
+
+
         return response('Success', 200);
+        // Webhook event types
     }
-    // 20190619 webhook
+    // 20190619 Line Messaging API
 
     // base64_decode
     private function fnUrlsafeB64Decode($data)
@@ -365,15 +395,19 @@ class SocialController extends Controller
     private function fnMCAT()
     {
         $url = 'https://api.line.me/v2/oauth/accessToken';
+
+        $header = ['Content-Type: application/x-www-form-urlencoded'];
+
         $data = [
-            'grant_type' => 'client_credentials',
-            'client_id' => env('LINE_Messaging_CLIENT_ID'),
-            'client_secret' => env('LINE_Messaging_CLIENT_SECRET')
+            'grant_type' => 'client_credentials', // client_credentials
+            'client_id' => env('LINE_Messaging_CLIENT_ID'), // Channel ID
+            'client_secret' => env('LINE_Messaging_CLIENT_SECRET') //Channel secret
         ];
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
@@ -381,13 +415,15 @@ class SocialController extends Controller
         curl_close($ch);
         if($statuscode != 200){
             $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-            Log::error($output['error']);
-            Log::error($output['error_description']);
+            Log::error($output['returnCode']); // 結果代碼
+            Log::error($output['returnMessage']); // 結果訊息或失敗理由
         }
 
         $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-        Log::info($output['token_type']);
-        Log::info($output['expires_in']);
+
+//        $output['access_token']; // Short-lived channel access token. Valid for 30 days. Note: Channel access tokens cannot be refreshed.
+//        $output['expires_in']; // Time until channel access token expires in seconds from time the token is issued
+//        $output['token_type']; // Bearer
 
         return $output['access_token'];
     }
@@ -396,55 +432,58 @@ class SocialController extends Controller
     private function fnMUPI($userId)
     {
         $url = 'https://api.line.me/v2/bot/profile/'.$userId;
+
+        $header = ['Authorization: Bearer '.$this->fnMCAT()];
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$this->fnMCAT()));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
         $statuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         if($statuscode != 200){
             $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-            Log::error($output['error']);
-            Log::error($output['error_description']);
+            Log::error($output['returnCode']); // 結果代碼
+            Log::error($output['returnMessage']); // 結果訊息或失敗理由
         }
 
         $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-        BotUserProfile::updateOrCreate(
+        BotUserProfile::updateOrCreate( // 新增更新bot用戶
             [
-                'bot_user_id' => $output['userId']
+                'bot_user_id' => $output['userId'] // Identifier of the user
             ],
             [
-                'display_name' => mb_convert_encoding($output['displayName'], "UTF-8"),
-                'picture_url' => $output['pictureUrl'],
-                'status_message' => mb_convert_encoding($output['statusMessage'], "UTF-8")
+                'display_name' => mb_convert_encoding($output['displayName'], "UTF-8"), // User's display name
+                'picture_url' => $output['pictureUrl'], // Profile image URL. "https" image URL. Not included in the response if the user doesn't have a profile image.
+                'status_message' => mb_convert_encoding($output['statusMessage'], "UTF-8") // User's status message. Not included in the response if the user doesn't have a status message.
             ]
         );
-
-        Log::info('save user profile information');
     }
     // Getting user profile information
-    // Get content
+    // Gets image, video, audio and file data sent by users.
     private function fnMC($messageId)
     {
         $url = 'https://api.line.me/v2/bot/message/'.$messageId.'/content';
+
+        $header = ['Authorization: Bearer '.$this->fnMCAT()];
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$this->fnMCAT()));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
         $statuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         if($statuscode != 200){
             $output = json_decode($output, JSON_OBJECT_AS_ARRAY);
-            Log::error($output['error']);
-            Log::error($output['error_description']);
+            Log::error($output['returnCode']); // 結果代碼
+            Log::error($output['returnMessage']); // 結果訊息或失敗理由
         }
 
         $output = base64_encode($output);
-        Log::info('save user profile information');
     }
-    // Get content
+    // Gets image, video, audio and file data sent by users.
     // Send reply message
     private function fnSRM($replyToken, $type)
     {
@@ -452,89 +491,135 @@ class SocialController extends Controller
             // Text
             case 'text':
 
-                $code = '100097';
+                $code = '100097'; // LINE original emoji
                 $bin = hex2bin(str_repeat('0', 8 - strlen($code)) . $code);
-                $emoticon =  mb_convert_encoding($bin, 'UTF-8', 'UTF-32BE');
+                $emoticona =  mb_convert_encoding($bin, 'UTF-8', 'UTF-32BE');
 
+                $code = '10008A'; // LINE original emoji
+                $bin = hex2bin(str_repeat('0', 8 - strlen($code)) . $code);
+                $emoticonb =  mb_convert_encoding($bin, 'UTF-8', 'UTF-32BE');
+
+//                array('type' => 'text', 'text' => 'Message text Max: 2000 characters');
                 $messages = [
-                    array('type' => 'text', 'text' => 'May I help you?'.$emoticon)
+                    array('type' => 'text', 'text' => 'May I help you ?'.$emoticona),
+                    array('type' => 'text', 'text' => 'NO !!'.$emoticonb),
+                    array(
+                        'type' => 'image',
+                        'originalContentUrl' => asset('images/preview_rdoraemon.jpg'), // Image URL (Max: 1000 characters) HTTPS JPEG Max: 4096 x 4096 Max: 1 MB
+                        'previewImageUrl' => asset('images/preview_rdoraemon.jpg') // Preview image URL (Max: 1000 characters) HTTPS JPEG Max: 240 x 240 Max: 1 MB
+                    ),
+                    array(
+                        'type' => 'location',
+                        'title' => '元智大學', // Title Max: 100 characters
+                        'address' => '320桃園市中壢區遠東路135號', // Address Max: 100 characters
+                        'latitude' => 24.9713158, // Latitude
+                        'longitude' => 121.2652293 // Longitude
+                    )
                 ];
                 break;
             // Sticker
             case 'sticker':
+
                 $messages = [
-                    array('type' => 'sticker', 'packageId' => '11538', 'stickerId' => '51626498')
+                    array(
+                        'type' => 'sticker',
+                        'packageId' => '11538', // Package ID for a set of stickers.
+                        'stickerId' => '51626498' // Sticker ID
+                    )
                 ];
                 break;
             // Image
             case 'image':
+
                 $messages = [
-                    array('type' => 'image',
-                        'originalContentUrl' => 'https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/crop%3D5%2C4%2C178%2C178%3Bh%3D240%3Bq%3D95/sign=158935c6ca11728b2462d662f5c9effa/c8ea15ce36d3d5397289b5943d87e950352ab035.jpg',
-                        'previewImageUrl' => 'https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/crop%3D5%2C4%2C178%2C178%3Bh%3D240%3Bq%3D95/sign=158935c6ca11728b2462d662f5c9effa/c8ea15ce36d3d5397289b5943d87e950352ab035.jpg')
+                    array(
+                        'type' => 'image',
+                        'originalContentUrl' => asset('images/original_rdoraemon.jpg'), // Image URL (Max: 1000 characters) HTTPS JPEG Max: 4096 x 4096 Max: 1 MB
+                        'previewImageUrl' => asset('images/original_rdoraemon.jpg') // Preview image URL (Max: 1000 characters) HTTPS JPEG Max: 240 x 240 Max: 1 MB
+                    )
                 ];
                 break;
             // Video
             case 'video':
+
                 $messages = [
-                    array('type' => 'video',
-                        'originalContentUrl' => '',
-                        'previewImageUrl' => 'https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/crop%3D5%2C4%2C178%2C178%3Bh%3D240%3Bq%3D95/sign=158935c6ca11728b2462d662f5c9effa/c8ea15ce36d3d5397289b5943d87e950352ab035.jpg')
+                    array(
+                        'type' => 'video',
+                        'originalContentUrl' => '', // URL of video file (Max: 1000 characters) HTTPS mp4 Max: 1 minute Max: 10 MB
+                        'previewImageUrl' => '') // URL of preview image (Max: 1000 characters) HTTPS JPEG Max: 240 x 240 Max: 1 MB
                 ];
                 break;
             // Audio
             case 'audio':
+
                 $messages = [
-                    array('type' => 'audio',
-                        'originalContentUrl' => '',
-                        'duration' => 600)
+                    array(
+                        'type' => 'audio',
+                        'originalContentUrl' => '', // URL of audio file (Max: 1000 characters) HTTPS m4a Max: 1 minute Max: 10 MB
+                        'duration' => '' // Length of audio file (milliseconds)
+                    )
                 ];
                 break;
             // Location
             case 'location':
+
                 $messages = [
-                    array('type' => 'location',
-                        'title' => '元智大學',
-                        'address' => '320桃園市中壢區遠東路135號',
-                        'latitude' => 24.9713158,
-                        'longitude' => 121.2652293)
+                    array(
+                        'type' => 'location',
+                        'title' => '元智大學', // Title Max: 100 characters
+                        'address' => '320桃園市中壢區遠東路135號', // Address Max: 100 characters
+                        'latitude' => 24.9713158, // Latitude
+                        'longitude' => 121.2652293 // Longitude
+                    )
                 ];
                 break;
             // Imagemap
             case 'imagemap':
+
                 $messages = [
-                    array('type' => 'imagemap',
-                        'baseUrl' => 'https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/crop%3D5%2C4%2C178%2C178%3Bh%3D240%3Bq%3D95/sign=158935c6ca11728b2462d662f5c9effa/c8ea15ce36d3d5397289b5943d87e950352ab035.jpg',
-                        'altText' => 'This is an imagemap',
-                        'baseSize' => array('width' => 1040,
-                            'height' => 1040
+                    array(
+                        'type' => 'imagemap',
+                        'baseUrl' => asset('images/original_rdoraemon.jpg#'), // Base URL of the image Max: 1000 characters HTTPS
+                        'altText' => 'This is an Imagemap message test', // Alternative text Max: 400 characters
+                        'baseSize' => array(
+                            'width' => 1040, // Width of base image in pixels. Set to 1040.
+                            'height' => 1040 // Height of base image.
                         ),
-                        'video' => array('originalContentUrl' => 'https://www.youtube.com/watch?v=uuX_2MDaEzY',
-                            'previewImageUrl' => 'https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/crop%3D5%2C4%2C178%2C178%3Bh%3D240%3Bq%3D95/sign=158935c6ca11728b2462d662f5c9effa/c8ea15ce36d3d5397289b5943d87e950352ab035.jpg',
-                            'area' => array('x' => 0,
-                                'y' => 0,
-                                'width' => 1040,
-                                'height' => 585
+                        'video' => array(
+                            'originalContentUrl' => asset('images/ThatGirlDJCHENRemix.mp4'), // URL of the video file (Max: 1000 characters) HTTPS mp4 Max: 1 minute Max: 10 MB
+                            'previewImageUrl' => asset('images/preview_rdoraemon.jpg'), // URL of the preview image (Max: 1000 characters) HTTPS JPEG Max: 240 x 240 pixels Max: 1 MB
+                            'area' => array(
+                                'x' => 0, // Horizontal position of the video area relative to the left edge of the imagemap area. Value must be 0 or higher.
+                                'y' => 0, // Vertical position of the video area relative to the top of the imagemap area. Value must be 0 or higher
+                                'width' => 520, // Width of the video area
+                                'height' => 520 // Height of the video area
                             ),
-                            'externalLink' => array('linkUri' => 'https://www.yzu.edu.tw/',
-                                'label' => 'See More',
+                            'externalLink' => array(
+                                'linkUri' => 'https://www.youtube.com/watch?v=43gkGthJmS8', // Webpage URL. Called when the label displayed after the video is tapped. Max: 1000 characters The available schemes are http, https, line, and tel.
+                                'label' => 'See More' // Label. Displayed after the video is finished. Max: 30 characters
                             )
                         ),
-                        'actions' => [
-                            array('type' => 'uri',
-                                'linkUri' => 'https://www.yzu.edu.tw/',
-                                'area' => array('x' => 0,
-                                    'y' => 0,
+                        'actions' => [ // Action when tapped Max: 50
+                            array(
+                                'type' => 'uri',
+                                'label' => 'https://www.yzu.edu.tw/', // Label for the action. Spoken when the accessibility feature is enabled on the client device. Max: 50 characters.
+                                'linkUri' => 'https://www.yzu.edu.tw/',  // Webpage URL Max: 1000 characters The available schemes are http, https, line, and tel.
+                                'area' => array(
+                                    'x' => 0,
+                                    'y' => 520,
                                     'width' => 520,
-                                    'height' => 454
+                                    'height' => 520
                                 )
                             ),
-                            array('type' => 'message',
-                                'text' => 'Hello',
-                                'area' => array('x' => 520,
-                                    'y' => 586,
+                            array(
+                                'type' => 'message',
+                                'label' => 'Hello', // Label for the action. Spoken when the accessibility feature is enabled on the client device. Max: 50 characters.
+                                'text' => 'Hello', // Message to send. Max: 400 characters.
+                                'area' => array(
+                                    'x' => 520,
+                                    'y' => 0,
                                     'width' => 520,
-                                    'height' => 454
+                                    'height' => 1040
                                 )
                             )
                         ]
@@ -544,30 +629,55 @@ class SocialController extends Controller
             // Template
             case 'template':
                 $messages = [
-                    array('type' => 'template',
-                        'altText' => 'This is a buttons template',
-                        'template' => array(
-                            'type' => 'buttons',
-                            'thumbnailImageUrl' => 'https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/crop%3D5%2C4%2C178%2C178%3Bh%3D240%3Bq%3D95/sign=158935c6ca11728b2462d662f5c9effa/c8ea15ce36d3d5397289b5943d87e950352ab035.jpg',
-                            'imageAspectRatio' => 'rectangle',
-                            'imageSize' => 'cover',
-                            'imageBackgroundColor' => '#FFFFFF',
-                            'title' => 'Menu',
-                            'text' => 'Please select',
-                            'defaultAction' => array(
-                                'type' => 'uri',
-                                'label' => 'View detail',
-                                'uri' => 'https://www.youtube.com/watch?v=qFDB57T_5BM&list=RDBrRog8JncTc&index=3',
-                            ),
-                            'actions' => [
+                    array(
+                        'type' => 'template',
+                        'altText' => 'This is a carousel template', // Alternative text. Max: 400 characters
+                        'template' => array( // A Buttons, Confirm, Carousel, or Image Carousel object.
+                            'type' => 'carousel',
+                            'columns' => [
                                 array(
-                                    'type' => 'camera',
-                                    'label' => 'Camera'
+                                    'thumbnailImageUrl' => asset('images/original_rdoraemon.jpg#'), // Image URL (Max: 1000 characters) HTTPS JPEG or PNG Aspect ratio: 1:1.51 Max width: 1024px Max: 1 MB
+                                    'imageBackgroundColor' => '#FFFFFF', // Background color of image. Specify a RGB color value. The default value is #FFFFFF (white).
+                                    'title' => 'this is menu', // Title Max: 40 characters
+                                    'text' => 'description', // Message text Max: 120 characters (no image or title) Max: 60 characters (message with an image or title)
+                                    'defaultAction' => array( // Action when image is tapped; set for the entire image, title, and text area
+                                        'type' => 'uri',
+                                        'label' => 'View detail', // Label for the action
+                                        'uri' => 'https://developers.line.biz/en/reference/messaging-api/#carousel' // URI opened when the action is performed (Max: 1000 characters) The available schemes are http, https, line, and tel.
+                                    ),
+                                    'actions' => [
+                                        array(
+                                            'type' => 'message',
+                                            'label' => 'Hello', // Label for the action
+                                            'text' => 'Hello' // Text sent when the action is performed Max: 300 characters
+                                        ),
+                                        array(
+                                            'type' => 'camera',
+                                            'label' => 'Camera', // Label for the action Max: 20 characters
+                                        )
+                                    ]
                                 ),
                                 array(
-                                    'type' => 'message',
-                                    'label' => 'Yes',
-                                    'text' => 'Yes'
+                                    'thumbnailImageUrl' => asset('images/preview_rdoraemon.jpg#'), // Image URL (Max: 1000 characters) HTTPS JPEG or PNG Aspect ratio: 1:1.51 Max width: 1024px Max: 1 MB
+                                    'imageBackgroundColor' => '#FFFFFF', // Background color of image. Specify a RGB color value. The default value is #FFFFFF (white).
+                                    'title' => 'this is menu', // Title Max: 40 characters
+                                    'text' => 'description', // Message text Max: 120 characters (no image or title) Max: 60 characters (message with an image or title)
+                                    'defaultAction' => array( // Action when image is tapped; set for the entire image, title, and text area
+                                        'type' => 'uri',
+                                        'label' => 'View detail', // Label for the action
+                                        'uri' => 'https://developers.line.biz/en/reference/messaging-api/#carousel' // URI opened when the action is performed (Max: 1000 characters) The available schemes are http, https, line, and tel.
+                                    ),
+                                    'actions' => [
+                                        array(
+                                            'type' => 'message',
+                                            'label' => 'Hello', // Label for the action
+                                            'text' => 'Hello' // Text sent when the action is performed Max: 300 characters
+                                        ),
+                                        array(
+                                            'type' => 'camera',
+                                            'label' => 'Camera', // Label for the action Max: 20 characters
+                                        )
+                                    ]
                                 )
                             ]
                         )
@@ -576,19 +686,23 @@ class SocialController extends Controller
                 break;
         }
 
-        $data = [
-            'replyToken' => $replyToken,
-            'messages' => $messages,
-            'notificationDisabled' => false
+        $header = [
+            'Content-Type: application/json',
+            'Authorization: Bearer '.$this->fnMCAT()
         ];
 
-//        Log::debug(json_encode($data));
+        $data = [
+            'replyToken' => $replyToken, // Reply token received via webhook
+            'messages' => $messages, // Messages Max: 5
+            'notificationDisabled' => false // true: The user doesn't receive a push notification when the message is sent. false: The user receives a push notification when the message is sent (unless they have disabled push notifications in LINE and/or their device).
+        ];
 
         $url = 'https://api.line.me/v2/bot/message/reply';
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: Bearer '.$this->fnMCAT()));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
@@ -598,33 +712,90 @@ class SocialController extends Controller
         if($statuscode != 200){
             Log::error('Send reply message failed');
         }
-
-        Log::info('Send reply message success');
     }
     // Send reply message
     // 20190619 Send push message
     public function spm(Request $request)
     {
-        $botUserProfile = BotUserProfile::find($request->id);
-
-        $code = '100097';
-        $bin = hex2bin(str_repeat('0', 8 - strlen($code)) . $code);
-        $emoticon =  mb_convert_encoding($bin, 'UTF-8', 'UTF-32BE');
+        $botUserProfile = BotUserProfile::find($request->id); // 取得用戶
 
         $messages = [
-            array('type' => 'text', 'text' => 'May I help you?'.$emoticon)
+            array(
+                'type' => 'template',
+                'altText' => 'This is a carousel template', // Alternative text. Max: 400 characters
+                'template' => array( // A Buttons, Confirm, Carousel, or Image Carousel object.
+                    'type' => 'carousel',
+                    'columns' => [
+                        array(
+                            'thumbnailImageUrl' => asset('images/original_rdoraemon.jpg#'), // Image URL (Max: 1000 characters) HTTPS JPEG or PNG Aspect ratio: 1:1.51 Max width: 1024px Max: 1 MB
+                            'imageBackgroundColor' => '#FFFFFF', // Background color of image. Specify a RGB color value. The default value is #FFFFFF (white).
+                            'title' => 'this is menu', // Title Max: 40 characters
+                            'text' => 'description', // Message text Max: 120 characters (no image or title) Max: 60 characters (message with an image or title)
+                            'defaultAction' => array( // Action when image is tapped; set for the entire image, title, and text area
+                                'type' => 'uri',
+                                'label' => 'View detail', // Label for the action
+                                'uri' => 'https://developers.line.biz/en/reference/messaging-api/#carousel' // URI opened when the action is performed (Max: 1000 characters) The available schemes are http, https, line, and tel.
+                            ),
+                            'actions' => [
+                                array(
+                                    'type' => 'message',
+                                    'label' => 'Hello', // Label for the action
+                                    'text' => 'Hello' // Text sent when the action is performed Max: 300 characters
+                                ),
+                                array(
+                                    'type' => 'camera',
+                                    'label' => 'Camera', // Label for the action Max: 20 characters
+                                )
+                            ]
+                        ),
+                        array(
+                            'thumbnailImageUrl' => asset('images/preview_rdoraemon.jpg#'), // Image URL (Max: 1000 characters) HTTPS JPEG or PNG Aspect ratio: 1:1.51 Max width: 1024px Max: 1 MB
+                            'imageBackgroundColor' => '#FFFFFF', // Background color of image. Specify a RGB color value. The default value is #FFFFFF (white).
+                            'title' => 'this is menu', // Title Max: 40 characters
+                            'text' => 'description', // Message text Max: 120 characters (no image or title) Max: 60 characters (message with an image or title)
+                            'defaultAction' => array( // Action when image is tapped; set for the entire image, title, and text area
+                                'type' => 'uri',
+                                'label' => 'View detail', // Label for the action
+                                'uri' => 'https://developers.line.biz/en/reference/messaging-api/#carousel' // URI opened when the action is performed (Max: 1000 characters) The available schemes are http, https, line, and tel.
+                            ),
+                            'actions' => [
+                                array(
+                                    'type' => 'message',
+                                    'label' => 'Hello', // Label for the action
+                                    'text' => 'Hello' // Text sent when the action is performed Max: 300 characters
+                                ),
+                                array(
+                                    'type' => 'cameraRoll',
+                                    'label' => 'Camera roll', // Label for the action Max: 20 characters
+                                ),
+                                array(
+                                    'type' => 'location',
+                                    'label' => 'Location', // Label for the action Max: 20 characters
+                                )
+                            ]
+                        )
+                    ]
+                )
+            )
         ];
 
         $url = 'https://api.line.me/v2/bot/message/push';
-        $data = [
-            'to' => $botUserProfile->bot_user_id,
-            'messages' => $messages,
-            'notificationDisabled' => false
+
+        $header = [
+            'Content-Type: application/json',
+            'Authorization: Bearer '.$this->fnMCAT()
         ];
+
+        $data = [
+            'to' => $botUserProfile->bot_user_id, // ID of the target recipient. Use a userId, groupId, or roomId value returned in a webhook event object. Do not use the LINE ID found on LINE.
+            'messages' => $messages, // Messages Max: 5
+            'notificationDisabled' => false // true: The user doesn't receive a push notification when the message is sent. false: The user receives a push notification when the message is sent (unless they have disabled push notifications in LINE and/or their device).
+        ];
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: Bearer '.$this->fnMCAT()));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
@@ -634,7 +805,6 @@ class SocialController extends Controller
             Log::error('Send push message failed');
         }
 
-        Log::info('Send push message success');
         return back();
     }
     // 20190619 Send push message
