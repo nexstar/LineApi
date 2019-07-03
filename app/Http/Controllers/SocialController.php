@@ -765,10 +765,6 @@ class SocialController extends Controller
                                     'text' => 'Hello' // Text sent when the action is performed Max: 300 characters
                                 ),
                                 array(
-                                    'type' => 'cameraRoll',
-                                    'label' => 'Camera roll', // Label for the action Max: 20 characters
-                                ),
-                                array(
                                     'type' => 'location',
                                     'label' => 'Location', // Label for the action Max: 20 characters
                                 )
@@ -993,8 +989,9 @@ class SocialController extends Controller
 
             return redirect('home')->with('payments', $output);
         }else{
-            Log::error($output['returnCode']); // 結果代碼
-            Log::error($output['returnMessage']); // 結果訊息或失敗理由
+            Log::error($outputArr['returnCode']); // 結果代碼
+            Log::error($outputArr['returnMessage']); // 結果訊息或失敗理由
+            return redirect('home')->with('payments', $output);
         }
     }
     public function refundapi(Request $request) // 退款 API
@@ -1044,8 +1041,8 @@ class SocialController extends Controller
 
             return redirect('home')->with('refund', $output);
         }else{
-            Log::error($output['returnCode']); // 結果代碼
-            Log::error($output['returnMessage']); // 結果訊息或失敗理由
+            Log::error($outputArr['returnCode']); // 結果代碼
+            Log::error($outputArr['returnMessage']); // 結果訊息或失敗理由
             return redirect('home')->with('refund', $output);
         }
     }
@@ -1079,8 +1076,8 @@ class SocialController extends Controller
         if($outputArr['returnCode'] == '0000'){ // 結果代碼
             return 1;
         }else{
-            Log::error($output['returnCode']); // 結果代碼
-            Log::error($output['returnMessage']); // 結果訊息或失敗理由
+            Log::error($outputArr['returnCode']); // 結果代碼
+            Log::error($outputArr['returnMessage']); // 結果訊息或失敗理由
             return 0;
         }
     }
