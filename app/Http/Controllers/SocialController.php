@@ -164,6 +164,7 @@ class SocialController extends Controller
         return redirect('/home');
     }
     // 20190612 Line Login
+
     // 20190613 Refresh access token
     public function retoken(Request $request)
     {
@@ -236,9 +237,12 @@ class SocialController extends Controller
         }
     }
     // 20190613 Refresh access token
+
     // 20190619 Line Messaging API
     public function webhook(Request $request, $text)
     {
+        Log::info(collect($request->all()));
+        return;
         // Validating the signature
         $header = $request->header();
         $xLineSignature = $header['x-line-signature'][0];
@@ -367,7 +371,6 @@ class SocialController extends Controller
                 break;
             // Unfollow event
             case 'unfollow':
-
                 break;
         }
         // Event
@@ -391,6 +394,7 @@ class SocialController extends Controller
         return base64_decode(strtr($data, '-_', '+/'));
     }
     // base64_decode
+
     // Get channel access token
     private function fnMCAT()
     {
@@ -428,6 +432,7 @@ class SocialController extends Controller
         return $output['access_token'];
     }
     // Get channel access token
+
     // Getting user profile information
     private function fnMUPI($userId)
     {
@@ -461,6 +466,7 @@ class SocialController extends Controller
         );
     }
     // Getting user profile information
+
     // Gets image, video, audio and file data sent by users.
     private function fnMC($messageId)
     {
@@ -484,6 +490,7 @@ class SocialController extends Controller
         $output = base64_encode($output);
     }
     // Gets image, video, audio and file data sent by users.
+
     // Send reply message
     private function fnSRM($replyToken, $type)
     {
@@ -692,9 +699,11 @@ class SocialController extends Controller
         ];
 
         $data = [
-            'replyToken' => $replyToken, // Reply token received via webhook
-            'messages' => $messages, // Messages Max: 5
-            'notificationDisabled' => false // true: The user doesn't receive a push notification when the message is sent. false: The user receives a push notification when the message is sent (unless they have disabled push notifications in LINE and/or their device).
+            'replyToken' => $replyToken,
+            'messages' => $messages,
+            'notificationDisabled' => false
+            // true: The user doesn't receive a push notification when the message is sent.
+            // false: The user receives a push notification when the message is sent (unless they have disabled push notifications in LINE and/or their device).
         ];
 
         $url = 'https://api.line.me/v2/bot/message/reply';
@@ -714,6 +723,7 @@ class SocialController extends Controller
         }
     }
     // Send reply message
+
     // 20190619 Send push message
     public function spm(Request $request)
     {

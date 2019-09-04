@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Ixudra\Curl\CurlServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -189,6 +189,7 @@ return [
     */
 
     'aliases' => [
+        'Curl'          => Ixudra\Curl\Facades\Curl::class,
 
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
