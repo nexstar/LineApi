@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="11ad541e-5887-45f5-b6b4-754f33413e63" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Service/Line/AccessTokenService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Service/Line/EmoJiService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Service/Line/MessageService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Service/Line/ProfileService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Service/Other/ResponseService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SocialController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/SocialController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+    <list default="true" id="58bc7a23-22c1-4fac-afce-5189a640999a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Service/Line/ChannelService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Service/Line/MessageService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Service/Line/MessageService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/command.sh" beforeDir="false" afterPath="$PROJECT_DIR$/command.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
@@ -24,49 +23,38 @@
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
   </component>
   <component name="FUSProjectUsageTrigger">
-    <session id="-1400489071">
+    <session id="-88838895">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.open.time.15" value="1" />
+          <entry key="project.open.time.2" value="1" />
           <entry key="project.opened" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="env" value="2" />
-          <entry key="example" value="2" />
-          <entry key="json" value="2" />
-          <entry key="log" value="24" />
-          <entry key="php" value="47" />
+          <entry key="log" value="9" />
+          <entry key="php" value="37" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key=".env file" value="4" />
-          <entry key="JSON" value="2" />
-          <entry key="PHP" value="47" />
-          <entry key="PLAIN_TEXT" value="24" />
+          <entry key="PHP" value="37" />
+          <entry key="PLAIN_TEXT" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="env" value="8" />
-          <entry key="json" value="7" />
-          <entry key="log" value="3" />
-          <entry key="php" value="3217" />
+          <entry key="php" value="2035" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key=".env file" value="8" />
-          <entry key="JSON" value="7" />
-          <entry key="PHP" value="3217" />
-          <entry key="PLAIN_TEXT" value="3" />
+          <entry key="PHP" value="2035" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.php.new.class">
         <counts>
-          <entry key="PHP Class.type" value="6" />
+          <entry key="PHP Class.type" value="1" />
         </counts>
       </usages-collector>
     </session>
@@ -74,26 +62,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/SocialController.php">
+        <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="499" lean-forward="true" selection-start-line="499" selection-end-line="499" />
-              <folding>
-                <element signature="e#40#53#0#PHP" expanded="true" />
-                <element signature="e#288#7250#0#PHP" />
-                <element signature="e#7320#10904#0#PHP" />
-                <element signature="e#12327#17803#0#PHP" />
-                <element signature="e#18595#20075#0#PHP" />
-                <element signature="e#20153#21581#0#PHP" />
-                <element signature="e#21688#22445#0#PHP" />
-                <element signature="e#24238#24569#0#PHP" />
-                <element signature="e#24603#25107#0#PHP" />
-                <element signature="e#25141#25560#0#PHP" />
-                <element signature="e#25594#25983#0#PHP" />
-                <element signature="e#26020#26490#0#PHP" />
-                <element signature="e#26527#30096#0#PHP" />
-                <element signature="e#30133#34646#0#PHP" />
-              </folding>
+            <state relative-caret-position="216">
+              <caret line="20" column="31" lean-forward="true" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -101,11 +73,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Service/Line/MessageService.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="29" column="32" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="32" />
-              <folding>
-                <element signature="e#35#69#0#PHP" expanded="true" />
-              </folding>
+            <state relative-caret-position="288">
+              <caret line="40" selection-start-line="40" selection-end-line="40" />
             </state>
           </provider>
         </entry>
@@ -113,8 +82,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="522">
-              <caret line="38" column="27" lean-forward="true" selection-start-line="38" selection-start-column="27" selection-end-line="38" selection-end-column="27" />
+            <state relative-caret-position="371">
+              <caret line="26" column="41" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="41" />
               <folding>
                 <element signature="e#45#81#0#PHP" expanded="true" />
               </folding>
@@ -122,22 +91,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="true" current-in-tab="false">
-        <entry file="remoteDeploymentFS://&lt;02d57ec3-0762-47cc-8c52-dbc223db9774&gt;/storage/logs/laravel-2019-09-04.log">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
-              <caret line="1" column="163" selection-start-line="1" selection-start-column="130" selection-end-line="1" selection-end-column="163" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/routes/web.php">
+        <entry file="file://$PROJECT_DIR$/app/Service/Line/ChannelService.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="24" column="77" selection-start-line="24" selection-start-column="77" selection-end-line="24" selection-end-column="77" />
+            <state relative-caret-position="337">
+              <caret line="36" column="24" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="24" />
               <folding>
-                <element signature="e#453#493#0#PHP" expanded="true" />
+                <element signature="e#238#241#0#PHP" />
               </folding>
             </state>
           </provider>
@@ -147,48 +107,43 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>env</find>
-      <find>replyToken</find>
-      <find>$sourceType</find>
-      <find>fnSRM</find>
-      <find>webhook</find>
-      <find>https://api.line.me/v2/bot/message/reply</find>
-      <find>push</find>
+      <find>Multi</find>
+      <find>$MultiCast</find>
+      <find>MultiCast</find>
+      <find>'20190904'</find>
     </findStrings>
     <replaceStrings>
-      <replace>'</replace>
+      <replace>Group</replace>
+      <replace>$Date</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.txt" root0="SKIP_INSPECTION" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.env" />
-        <option value="$PROJECT_DIR$/app/Service/Other/ResponseService.php" />
-        <option value="$PROJECT_DIR$/config/app.php" />
-        <option value="&lt;02d57ec3-0762-47cc-8c52-dbc223db9774&gt;/config/app.php" />
-        <option value="$PROJECT_DIR$/composer.json" />
-        <option value="&lt;02d57ec3-0762-47cc-8c52-dbc223db9774&gt;/composer.json" />
-        <option value="&lt;02d57ec3-0762-47cc-8c52-dbc223db9774&gt;/storage/logs/laravel-2019-09-04.log" />
-        <option value="$PROJECT_DIR$/app/Service/AccessTokenService.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/WebHookController.php" />
-        <option value="$PROJECT_DIR$/app/Service/Line/AccessTokenService.php" />
         <option value="$PROJECT_DIR$/routes/api.php" />
-        <option value="$PROJECT_DIR$/app/Service/Line/ProfileService.php" />
-        <option value="$PROJECT_DIR$/app/Service/Line/EmojiService.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/SocialController.php" />
-        <option value="$PROJECT_DIR$/app/Service/Line/EmoJiService.php" />
-        <option value="$PROJECT_DIR$/app/Service/Line/MessageService.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Line/NotificationController.php" />
+        <option value="$PROJECT_DIR$/app/Service/Line/MessageService.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
+        <option value="$PROJECT_DIR$/app/Service/Line/ChannelService.php" />
       </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
     <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
   </component>
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
@@ -291,11 +246,9 @@
       <path value="$PROJECT_DIR$/vendor/ixudra/curl" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1190" />
-    <option name="height" value="1040" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1280" />
+    <option name="height" value="800" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -334,6 +287,14 @@
               <item name="LineApi" type="b2602c69:ProjectViewProjectNode" />
               <item name="LineApi" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
+              <item name="Line" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="LineApi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LineApi" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="Service" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -363,18 +324,11 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../DeepsenxeOfficialWebsite" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\LineApi\app\Http\Controllers" />
-      <recent name="C:\xampp\htdocs\LineApi\app\Http\Controllers\Line" />
-      <recent name="C:\xampp\htdocs\LineApi\app\Service\Line" />
-    </key>
+    <property name="settings.editor.selected.configurable" value="copyright" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -393,33 +347,34 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="11ad541e-5887-45f5-b6b4-754f33413e63" name="Default Changelist" comment="" />
-      <created>1567475190571</created>
+      <changelist id="58bc7a23-22c1-4fac-afce-5189a640999a" name="Default Changelist" comment="" />
+      <created>1567448378363</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1567475190571</updated>
-      <workItem from="1567475193275" duration="34906000" />
+      <updated>1567448378363</updated>
+      <workItem from="1567448380758" duration="12076000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34906000" />
+    <option name="totallyTimeSpent" value="12076000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="npm" order="0" side_tool="true" />
       <window_info id="Favorites" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.15991472" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.24959612" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
-      <window_info id="Remote Host" order="4" weight="0.16950959" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info id="Remote Host" order="4" weight="0.19789983" />
+      <window_info anchor="bottom" id="Docker" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Command Line Tools Console" weight="0.32876712" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="File Transfer" weight="0.329718" />
+      <window_info anchor="bottom" id="File Transfer" weight="0.32876712" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -427,35 +382,12 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Database" order="0" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info anchor="right" id="Mongo Explorer" order="0" />
+      <window_info anchor="right" id="Database" order="1" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="2" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
     </layout>
-    <layout-to-restore>
-      <window_info id="npm" order="0" side_tool="true" />
-      <window_info id="Favorites" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.15991472" />
-      <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
-      <window_info id="Remote Host" order="4" weight="0.16950959" />
-      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="1" />
-      <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="3" show_stripe_button="false" />
-      <window_info anchor="bottom" id="File Transfer" order="4" weight="0.329718" />
-      <window_info anchor="bottom" id="Database Changes" order="5" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Message" order="6" />
-      <window_info anchor="bottom" id="Find" order="7" />
-      <window_info anchor="bottom" id="Run" order="8" />
-      <window_info anchor="bottom" id="Debug" order="9" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="12" />
-      <window_info anchor="right" id="Database" order="0" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -464,161 +396,130 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/User.php">
+    <entry file="file://$PROJECT_DIR$/routes/api.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-53">
-          <caret line="18" column="7" lean-forward="true" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
+        <state relative-caret-position="208">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Social.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Order.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/BotUserProfile.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/HomeController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="15" column="7" lean-forward="true" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
+        <state relative-caret-position="346">
+          <caret line="22" column="19" lean-forward="true" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Controller.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/HomeController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="21" column="7" lean-forward="true" selection-start-line="21" selection-start-column="7" selection-end-line="21" selection-end-column="7" />
+        <state relative-caret-position="260">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env.example">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Auth/RegisterController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="19" column="20" lean-forward="true" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+        <state relative-caret-position="-1162" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Auth/ResetPasswordController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-91">
+          <caret line="13" column="5" lean-forward="true" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Auth/VerificationController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="9" column="61" selection-start-line="9" selection-start-column="61" selection-end-line="9" selection-end-column="61" />
-        </state>
+        <state relative-caret-position="-496" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/app.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="169" column="43" lean-forward="true" selection-start-line="169" selection-start-column="43" selection-end-line="169" selection-end-column="43" />
-        </state>
+        <state relative-caret-position="-582" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/composer.json">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Auth/ForgotPasswordController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="15" column="32" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="16" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Service/Other/ResponseService.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="14" column="23" selection-start-line="14" selection-start-column="15" selection-end-line="14" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Service/Line/AccessTokenService.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/WebHookController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="10" column="2" selection-start-line="10" selection-start-column="2" selection-end-line="21" selection-end-column="5" />
-          <folding>
-            <element signature="e#45#83#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/api.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Service/Line/ProfileService.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="18" column="42" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="42" />
-        </state>
+        <state relative-caret-position="-279" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/SocialController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="499" lean-forward="true" selection-start-line="499" selection-end-line="499" />
-          <folding>
-            <element signature="e#40#53#0#PHP" expanded="true" />
-            <element signature="e#288#7250#0#PHP" />
-            <element signature="e#7320#10904#0#PHP" />
-            <element signature="e#12327#17803#0#PHP" />
-            <element signature="e#18595#20075#0#PHP" />
-            <element signature="e#20153#21581#0#PHP" />
-            <element signature="e#21688#22445#0#PHP" />
-            <element signature="e#24238#24569#0#PHP" />
-            <element signature="e#24603#25107#0#PHP" />
-            <element signature="e#25141#25560#0#PHP" />
-            <element signature="e#25594#25983#0#PHP" />
-            <element signature="e#26020#26490#0#PHP" />
-            <element signature="e#26527#30096#0#PHP" />
-            <element signature="e#30133#34646#0#PHP" />
-          </folding>
+        <state relative-caret-position="478">
+          <caret line="276" column="9" lean-forward="true" selection-start-line="263" selection-start-column="8" selection-end-line="276" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Service/Line/EmoJiService.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Line/NotificationController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Service/Line/MessageService.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="29" column="32" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="32" />
-          <folding>
-            <element signature="e#35#69#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="38" column="27" lean-forward="true" selection-start-line="38" selection-start-column="27" selection-end-line="38" selection-end-column="27" />
+        <state relative-caret-position="341">
+          <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
           <folding>
             <element signature="e#45#81#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Service/Line/MessageService.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="40" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/routes/web.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="24" column="77" selection-start-line="24" selection-start-column="77" selection-end-line="24" selection-end-column="77" />
+        <state relative-caret-position="216">
+          <caret line="20" column="31" lean-forward="true" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="26" column="41" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="41" />
           <folding>
-            <element signature="e#453#493#0#PHP" expanded="true" />
+            <element signature="e#45#81#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Service/Line/ChannelService.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="36" column="24" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="24" />
+          <folding>
+            <element signature="e#238#241#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="Copyright.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
