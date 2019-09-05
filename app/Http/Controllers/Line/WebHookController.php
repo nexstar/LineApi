@@ -23,6 +23,7 @@ class WebHookController extends Controller
         $request = $request->all();
 
         collect($request['events'])->map(function ($Events){
+            Log::info(collect($Events));
             $ChannelService = new ChannelService();
             $ChannelService->EventChannel($Events);
         });

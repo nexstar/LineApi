@@ -17,16 +17,15 @@ Route::get('GroupSend',[
 ]);
 
 Route::get('aa',function (){
-    $MessageService = new MessageService();
-    $Date = date('Ymd',time());
-    $ReplyCount = $MessageService->GetReplyCountUrl($Date);
-    $PushCount  = $MessageService->GetPushCountUrl($Date);
-    $MultiCastCount = $MessageService->GetMultiCastCountUrl($Date);
 
-    $Sum = 'ReplyCount: '.$ReplyCount;
-    $Sum .= ' | PushCount: '.$PushCount;
-    $Sum .= ' | MultiCastCount: '.$MultiCastCount;
-    dd($Sum);
+    $MessageService = new MessageService();
+    $MessageService->SendPush('C7ad2138cb31ae26dc9a547792b98e53d',[
+        [
+            'type' => 'text'
+            ,'text' => '123123'
+        ]
+    ]);
+
 });
 
 //Auth::routes();

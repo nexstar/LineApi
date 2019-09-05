@@ -7,7 +7,7 @@ use Ixudra\Curl\Facades\Curl;
 class MessageService
 {
     private $PushPerson   = 'https://api.line.me/v2/bot/message/push';
-    private $RooTUserIDs  = ['U58c2fae184451125ab1863cb4c2b418b'];
+    public $RooTUserIDs   = ['U58c2fae184451125ab1863cb4c2b418b'];
     private $ReplyUrl     = 'https://api.line.me/v2/bot/message/reply';
     private $MultiCastUrl = 'https://api.line.me/v2/bot/message/multicast';
     private $ProfileUrl   = 'https://api.line.me/v2/bot/profile/';
@@ -95,6 +95,20 @@ class MessageService
     }
 
     /**
+     * xID can use UserID or GroupID or RoomID
+     * @param $xID
+     * @param $Speak
+     */
+    public function SendPush($xID, $Speak)
+    {
+        $this->RestFulPost($this->PushPerson, $this->header, json_encode([
+             'to'       => $xID
+            ,'messages' => $Speak
+            ,'notificationDisabled' => false
+        ]));
+    }
+
+    /**
      * 指定用戶　進行　群眾發送
      * @param array $UserIDs
      * @param $Speak
@@ -115,7 +129,7 @@ class MessageService
      */
     public function SendReply($UserID, $EventsReplyToken)
     {
-        $Speak  = $this->GetProfile($UserID)['displayName'].' 歡迎您,加入主動式警報... 請勿關閉通知叮叮叮叮叮';
+        $Speak  = $this->GetProfile($UserID)['displayName'].' 歡迎您,加入主動式警報... 請勿關閉通知叮叮叮叮叮,';
         $Speak .= '請告知管理者,需要哪些警報業務; '.EmoJiService::ConvertIcon('100033');
         $this->RestFulPost($this->ReplyUrl, $this->header, json_encode([
             'replyToken' => $EventsReplyToken,
@@ -165,4 +179,5 @@ class MessageService
             ->returnResponseObject()
             ->post();
     }
+
 }
