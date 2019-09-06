@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="58bc7a23-22c1-4fac-afce-5189a640999a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Service/Line/ChannelService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Service/Line/ChannelService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Service/Line/MessageService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Service/Line/MessageService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,23 +26,23 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="log" value="9" />
-          <entry key="php" value="37" />
+          <entry key="php" value="40" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PHP" value="37" />
+          <entry key="PHP" value="40" />
           <entry key="PLAIN_TEXT" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="php" value="2035" />
+          <entry key="php" value="2047" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PHP" value="2035" />
+          <entry key="PHP" value="2047" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.php.new.class">
@@ -83,55 +80,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="597">
-              <caret line="27" column="41" selection-start-line="27" selection-start-column="29" selection-end-line="27" selection-end-column="41" />
-              <folding>
-                <element signature="e#45#81#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Service/Line/ChannelService.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="43" column="35" lean-forward="true" selection-start-line="43" selection-start-column="35" selection-end-line="43" selection-end-column="35" />
-              <folding>
-                <element signature="e#238#241#0#PHP" />
-                <element signature="e#1905#2899#0#PHP" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Service/Line/MessageService.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="115" column="57" lean-forward="true" selection-start-line="115" selection-start-column="57" selection-end-line="115" selection-end-column="57" />
-              <folding>
-                <element signature="e#35#69#0#PHP" expanded="true" />
-                <element signature="e#766#1074#0#PHP" />
-                <element signature="e#1080#1234#0#PHP" />
-                <element signature="e#1239#1555#0#PHP" />
-                <element signature="e#1561#1715#0#PHP" />
-                <element signature="e#2057#2371#0#PHP" />
-                <element signature="e#2040#2194#0#PHP" />
-                <element signature="e#2199#2523#0#PHP" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="497">
-              <caret line="27" selection-start-line="27" selection-end-line="27" />
+            <state relative-caret-position="361">
+              <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -157,16 +110,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.txt" root0="SKIP_INSPECTION" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/routes/api.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Line/NotificationController.php" />
         <option value="&lt;79306253-52c4-4f8d-a553-a2fee5a5d0a5&gt;/storage/logs/laravel-2019-09-05.log" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php" />
         <option value="$PROJECT_DIR$/app/Service/Line/MessageService.php" />
         <option value="$PROJECT_DIR$/app/Service/Line/ChannelService.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php" />
       </list>
     </option>
   </component>
@@ -394,17 +350,17 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30277000" />
+    <option name="totallyTimeSpent" value="31403000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="npm" order="0" side_tool="true" />
       <window_info id="Favorites" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.15991472" />
+      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.24959612" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
-      <window_info id="Remote Host" order="4" weight="0.15511727" />
+      <window_info id="Remote Host" order="4" weight="0.22213247" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -545,48 +501,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="597">
-          <caret line="27" column="41" selection-start-line="27" selection-start-column="29" selection-end-line="27" selection-end-column="41" />
-          <folding>
-            <element signature="e#45#81#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Service/Line/ChannelService.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="43" column="35" lean-forward="true" selection-start-line="43" selection-start-column="35" selection-end-line="43" selection-end-column="35" />
+        <state relative-caret-position="494">
+          <caret line="36" column="48" selection-start-line="36" selection-start-column="48" selection-end-line="36" selection-end-column="48" />
           <folding>
             <element signature="e#238#241#0#PHP" />
-            <element signature="e#1905#2899#0#PHP" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Service/Line/MessageService.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="115" column="57" lean-forward="true" selection-start-line="115" selection-start-column="57" selection-end-line="115" selection-end-column="57" />
+        <state relative-caret-position="624">
+          <caret line="25" column="36" lean-forward="true" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Line/WebHookController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="34" column="17" lean-forward="true" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
           <folding>
-            <element signature="e#35#69#0#PHP" expanded="true" />
-            <element signature="e#766#1074#0#PHP" />
-            <element signature="e#1080#1234#0#PHP" />
-            <element signature="e#1239#1555#0#PHP" />
-            <element signature="e#1561#1715#0#PHP" />
-            <element signature="e#2057#2371#0#PHP" />
-            <element signature="e#2040#2194#0#PHP" />
-            <element signature="e#2199#2523#0#PHP" />
+            <element signature="e#45#81#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/web.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="497">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        <state relative-caret-position="361">
+          <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
         </state>
       </provider>
     </entry>

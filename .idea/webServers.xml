@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="79306253-52c4-4f8d-a553-a2fee5a5d0a5" name="Deepsenxe_Line" url="https://line.deepsenxe.com/">
-        <fileTransfer host="52.43.58.36" port="22" privateKey="C:\Users\AD-1-2\Desktop\AuthenticData\Amazon\Ubuntu_AD_Jack.pem" rootFolder="/DATA/Container/Line/line_web/LineApi" accessType="SFTP" keyPair="true">
+        <fileTransfer host="52.43.58.36" port="22" privateKey="$PROJECT_DIR$/../../../../../AuthenticData/Amazan/Ubuntu_AD_Jack.pem" rootFolder="/DATA/Container/Line/line_web/LineApi" accessType="SFTP" keyPair="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
           </advancedOptions>

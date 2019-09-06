@@ -18,13 +18,13 @@ Route::get('GroupSend',[
 
 Route::get('aa',function (){
 
-    $MessageService = new MessageService();
-    $MessageService->SendPush('C7ad2138cb31ae26dc9a547792b98e53d',[
-        [
-            'type' => 'text'
-            ,'text' => '123123'
-        ]
-    ]);
+//    $MessageService = new MessageService();
+//    $MessageService->SendPush('U58c2fae184451125ab1863cb4c2b418b',[
+//        [
+//            'type' => 'text'
+//            ,'text' => '123123'
+//        ]
+//    ]);
 
 });
 
